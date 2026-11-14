@@ -1,0 +1,49 @@
+
+name: Gerar APK MGlass
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - 'MGlass_Android_Starter.zip'
+      - '.github/workflows/android.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar codigo
+        uses: actions/checkout@v5
+
+      - name: Extrair projeto
+        run: unzip -o MGlass_Android_Starter.zip -d .
+
+      - name: Instalar Java
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Instalar Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Preparar Android
+        working-directory: MGlass_Android_Starter/MGlass_Android_Starter/mobile
+        run: flutter create --platforms=android .
+
+      - name: Baixar dependencias
+        working-directory: MGlass_Android_Starter/MGlass_Android_Starter/mobile
+        run: flutter pub get
+
+      - name: Compilar APK
+        working-directory: MGlass_Android_Starter/MGlass_Android_Starter/mobile
+        run: flutter build apk --release
+
+      - name: Guardar APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: MGlass-APK
+          path: MGlass_Android_Starter/MGlass_Android_Starter/mobile/build/app/outputs/flutter-apk/app-release.apk
