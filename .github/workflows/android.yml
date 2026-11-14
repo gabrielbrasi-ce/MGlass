@@ -31,8 +31,7 @@ jobs:
           channel: stable
 
       - name: Preparar Android
-        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter create --platforms=android .
-
+        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter build apk --release --target-platform android-arm,android-arm64
       - name: Baixar dependencias
         run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter pub get
 
