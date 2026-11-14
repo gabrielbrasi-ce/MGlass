@@ -31,12 +31,12 @@ jobs:
           channel: stable
 
       - name: Preparar Android
-        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter build apk --release --target-platform android-arm,android-arm64
+        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter create --platforms=android .
       - name: Baixar dependencias
         run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter pub get
 
       - name: Compilar APK
-        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter build apk --release
+        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter build apk --release --target-platform android-arm,android-arm64
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
