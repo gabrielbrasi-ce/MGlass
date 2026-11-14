@@ -31,7 +31,8 @@ jobs:
           channel: stable
 
       - name: Preparar Android
-        working-directory:MGlass_Android_Starter/mobile
+        working-directory:
+        MGlass_Android_Starter/mobile
         run: flutter create --platforms=android .
 
       - name: Baixar dependencias
