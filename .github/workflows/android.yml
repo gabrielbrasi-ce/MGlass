@@ -17,7 +17,7 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Extrair projeto
-        run: unzip -o MGlass_Android_Starter.zip -d .
+        run: unzip -o MGlass_Android_Starter.zip -d projeto
 
       - name: Instalar Java
         uses: actions/setup-java@v5
@@ -31,20 +31,16 @@ jobs:
           channel: stable
 
       - name: Preparar Android
-        working-directory:
-        MGlass_Android_Starter/mobile
-        run: flutter create --platforms=android .
+        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter create --platforms=android .
 
       - name: Baixar dependencias
-        working-directory: MGlass_Android_Starter/MGlass_Android_Starter/mobile
-        run: flutter pub get
+        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter pub get
 
       - name: Compilar APK
-        working-directory: MGlass_Android_Starter/MGlass_Android_Starter/mobile
-        run: flutter build apk --release
+        run: cd "$(dirname "$(find projeto -name pubspec.yaml -print -quit)")" && flutter build apk --release
 
       - name: Guardar APK
         uses: actions/upload-artifact@v4
         with:
           name: MGlass-APK
-          path: MGlass_Android_Starter/MGlass_Android_Starter/mobile/build/app/outputs/flutter-apk/app-release.apk
+          path: projeto/**/build/app/outputs/flutter-apk/app-release.apk
